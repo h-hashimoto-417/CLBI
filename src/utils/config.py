@@ -25,7 +25,7 @@ USE_CACHE = False
 # --------------------------------
 # Dataset project
 # --------------------------------
-# 按照时间排好顺序的releases
+# 時系列順に並べたreleases
 PROJECT_RELEASE_LIST = [
 
     'ambari-1.2.0', 'ambari-2.1.0', 'ambari-2.2.0', 'ambari-2.4.0', 'ambari-2.5.0', 'ambari-2.6.0', 'ambari-2.7.0',

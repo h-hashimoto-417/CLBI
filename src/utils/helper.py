@@ -7,12 +7,12 @@ import re
 import numpy as np
 import pickle
 
-# 忽略警告信息
+# 警告メッセージを無視する
 from src.utils.config import PROJECT_RELEASE_LIST
 
 simplefilter(action='ignore', category=FutureWarning)
 
-# 全局变量设置
+# グローバル変数の設定
 # r'/root/line-dp/CLDP_data/' r'D:/CLDP_data/'
 root_path = r'D:/CLDP_data_D4J/'
 dataset_string = 'Dataset'
@@ -78,30 +78,30 @@ def read_file_level_dataset(release='', file_path=file_level_path):
     path = f'{file_path}{release}{file_level_path_suffix}'
     with open(path, 'r', encoding='utf-8', errors='ignore') as file:
         lines = file.readlines()
-        # 文件信息索引列表, 每个文件名不一样该语句才没有错误 TODO line.index(line)
+        # ファイル情報インデックスリスト、各ファイル名が異なる場合にのみこの文はエラーにならない TODO line.index(line)
         src_file_indices = [lines.index(line) for line in lines if r'.java,true,"' in line or r'.java,false,"' in line]
-        # 源文件路径,需要时返回 OK
+        # ソースファイルのパス、必要な場合はOKを返す
         src_files = [lines[index].split(',')[0] for index in src_file_indices]
-        # 缺陷标记
+        # 欠陥マーカー
         string_labels = [lines[index].split(',')[1] for index in src_file_indices]
         numeric_labels = [1 if label == 'true' else 0 for label in string_labels]
 
-        # 行级别的文本语料库
+        # 行レベルのテキストコーパス
         texts_lines = []
         for i in range(len(src_file_indices)):
-            # 从当前文件名所在行开始到下一个文件名所在行结束的所有代码行
+            # 現在のファイル名が存在する行から、次のファイル名が存在する行までのすべてのコード行
             s_index = src_file_indices[i]
             e_index = src_file_indices[i + 1] if i + 1 < len(src_file_indices) else len(lines)
 
-            # xxx 也许需要过滤掉注释行
+            # xxx おそらくコメント行を除外する必要がある
             code_lines = [line.strip() for line in lines[s_index:e_index]]
-            # 去掉首行中的文件名和标签,以及首行中的引号"
+            # 先頭行のファイル名とタグ、および先頭行の引用符"を除去する
             code_lines[0] = code_lines[0].split(',')[-1][1:]
-            # 删除列表中最后的"
+            # 删除列表中最后的"　リストの最後の「」を削除する
             code_lines = code_lines[:-1]
             texts_lines.append(code_lines)
 
-        # 多行合并后的文本语料库
+        # 多行合并后的文本语料库　複数行を結合した後のテキストコーパス
         texts = [' '.join(line) for line in texts_lines]
 
         return texts, texts_lines, numeric_labels, src_files
@@ -476,7 +476,7 @@ def get_bug_number():
 def calc_auc(label, pred):
     pos = [i for i in range(len(label)) if label[i] == 1]
     neg = [i for i in range(len(label)) if label[i] == 0]
-    # 计算正样本和负样本的索引, 以便索引出之后的概率值
+    # 计算正样本和负样本的索引, 以便索引出之后的概率值　正例と負例のインデックスを計算し、その後の確率値をインデックス化できるようにする
     auc = 0
     for i in pos:
         for j in neg:
