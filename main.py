@@ -16,7 +16,7 @@ MODEL_DICT = {'MIT-TMI-LR': TMI_LR, 'MIT-TMI-SVM': TMI_SVM, 'MIT-TMI-MNB': TMI_M
               'MIT-TMI-RF': TMI_RF, 'MIT-LineDP': LineDP,
               'SAT-PMD': PMD, 'SAT-CheckStyle': CheckStyle,
               'NLP-NGram': NGram, 'NLP-NGram-C': NGram_C,
-              'Glance-EA': Glance_EA, 'Glance-MD': Glance_MD, 'Glance-LR': Glance_LR,
+              'Glance-EA': Glance_EA, 'Glance-MD': Glance_MD, 'Glance-LR': Glance_LR, 'Glance-BEST' : Glance_BEST,
               }
 
 
