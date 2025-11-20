@@ -6,7 +6,7 @@ import sys
 # Code Path
 # --------------------------------
 # This variable should be modified as the correct path when running code in other locations.
-CODE_PATH = 'C:/Users/gzq-712/Desktop/Git/CLDP/'
+CODE_PATH = '/Users/hashimoto/Githubrepo/research_project_b4/CLBI/'
 sys.path.append(CODE_PATH)
 
 # --------------------------------
