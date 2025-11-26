@@ -18,7 +18,7 @@ root_path = r'/User/hashimoto/Githubrepo/'
 dataset_string = 'Dataset'
 result_string = 'Result'
 
-dataset_path = f'{root_path}/{dataset_string}/Bug-Info/'
+dataset_path = f'{root_path}/{dataset_string}/Bug-Info/' # 今回は使わないかも？
 file_level_path = f'{root_path}{dataset_string}/File-level/'
 line_level_path = f'{root_path}{dataset_string}/Line-level/'
 result_path = f'{root_path}{result_string}'
