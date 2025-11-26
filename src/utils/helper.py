@@ -14,7 +14,7 @@ simplefilter(action='ignore', category=FutureWarning)
 
 # グローバル変数の設定
 # r'/root/line-dp/CLDP_data/' r'D:/CLDP_data/'
-root_path = r'D:/CLDP_data_D4J/'
+root_path = r'/User/hashimoto/Githubrepo/'
 dataset_string = 'Dataset'
 result_string = 'Result'
 
