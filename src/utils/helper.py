@@ -22,7 +22,7 @@ dataset_path = f'{root_path}/{dataset_string}/Bug-Info/' # 今回は使わない
 file_level_path = f'{root_path}{dataset_string}/File-level/'
 line_level_path = f'{root_path}{dataset_string}/Line-level/'
 result_path = f'{root_path}{result_string}'
-file_level_path_suffix = '_ground-truth-files_dataset.csv'
+file_level_path_suffix = '_files_dataset.csv'
 line_level_path_suffix = '_defective_lines_dataset.csv'
 
 
@@ -79,7 +79,9 @@ def read_file_level_dataset(release='', file_path=file_level_path):
     with open(path, 'r', encoding='utf-8', errors='ignore') as file:
         lines = file.readlines()
         # ファイル情報インデックスリスト、各ファイル名が異なる場合にのみこの文はエラーにならない TODO line.index(line)
-        src_file_indices = [lines.index(line) for line in lines if r'.java,true,"' in line or r'.java,false,"' in line]
+        #src_file_indices = [lines.index(line) for line in lines if r'.java,true,"' in line or r'.java,false,"' in line]
+        src_file_indices = [lines.index(line) for line in lines if r'.java,true,' in line or r'.java,false,' in line]
+
         # ソースファイルのパス、必要な場合はOKを返す
         src_files = [lines[index].split(',')[0] for index in src_file_indices]
         # 欠陥マーカー
@@ -96,9 +98,10 @@ def read_file_level_dataset(release='', file_path=file_level_path):
             # xxx おそらくコメント行を除外する必要がある
             code_lines = [line.strip() for line in lines[s_index:e_index]]
             # 先頭行のファイル名とタグ、および先頭行の引用符"を除去する
-            code_lines[0] = code_lines[0].split(',')[-1][1:]
-            # 删除列表中最后的"　リストの最後の「」を削除する
-            code_lines = code_lines[:-1]
+            #code_lines[0] = code_lines[0].split(',')[-1][1:]   # 先頭行の"は今回無いため必要ない
+            code_lines[0] = code_lines[0].split(',')[-1]
+            # 删除列表中最后的"　行の最後の"を削除する
+            #code_lines = code_lines[:-1]
             texts_lines.append(code_lines)
 
         # 多行合并后的文本语料库　複数行を結合した後のテキストコーパス
