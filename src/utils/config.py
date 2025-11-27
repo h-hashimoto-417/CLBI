@@ -57,8 +57,11 @@ USE_CACHE = False
 
 # ]
 
-# バグのないもの、ファイルのデータがないものを削除した後の最終リスト
 PROJECT_RELEASE_LIST = [
+    'spring-projects.spring-boot-1.0.0'
+]
+# バグのないもの、ファイルのデータがないものを削除した後の最終リスト
+PROJECT_RELEASE_LIST_False = [
     'spring-projects.spring-boot-1.0.0',
     'iluwatar.java-design-patterns-1.0.0',
     'square.retrofit-1.0.0',
