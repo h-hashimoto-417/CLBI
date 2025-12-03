@@ -33,7 +33,7 @@ def get_project_releases_dict():
     """
     project_releases_dict = {}
     for release in PROJECT_RELEASE_LIST:
-        project = release.split('-')[-2:]
+        project = '-'.join(release.split('-')[:-1])
         if project not in project_releases_dict:
             project_releases_dict[project] = [release]
         else:
