@@ -29,7 +29,7 @@ class BaseModel(object):
         self.execution_time_file = f'{self.result_path}time.csv'
 
         # Model configuration info
-        self.project_name = train_release.split('-')[0]
+        self.project_name = '-'.join(train_release.split('-')[:-1])
         np.random.seed(0)
         self.random_state = 0
         self.threshold_effort = 0.2
