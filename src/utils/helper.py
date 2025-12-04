@@ -80,7 +80,7 @@ def read_file_level_dataset(release='', file_path=file_level_path):
         lines = file.readlines()
         # ファイル情報インデックスリスト、各ファイル名が異なる場合にのみこの文はエラーにならない TODO line.index(line)
         #src_file_indices = [lines.index(line) for line in lines if r'.java,true,"' in line or r'.java,false,"' in line]
-        src_file_indices = [lines.index(line) for line in lines if r'.java,true,' in line or r'.java,false,' in line]
+        src_file_indices = [lines.index(line) for line in lines if r'.java,True,' in line or r'.java,False,' in line]
 
         # ソースファイルのパス、必要な場合はOKを返す
         src_files = [lines[index].split(',')[0] for index in src_file_indices]
