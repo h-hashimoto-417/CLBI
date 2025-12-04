@@ -53,17 +53,17 @@ class BaseModel(object):
         self.test_text, self.test_text_lines, self.test_labels, self.test_filename = read_file_level_dataset(
             test_release)
 
-        # 明确存储实验结果的每个文件夹及文件路径
+        # 明确存储实验结果的每个文件夹及文件路径 実験結果を保存する各フォルダおよびファイルのパスを明確に指定する
         # result file path
         self.file_level_result_file = f'{self.file_level_result_path}{self.project_name}/{self.test_release}-result.csv'
         self.line_level_result_file = f'{self.line_level_result_path}{self.project_name}/{self.test_release}-result.csv'
         self.buggy_density_file = f'{self.buggy_density_path}{self.test_release}-density.csv'
         self.commit_buggy_path = f'{dataset_path}{self.test_release.split("-")[0]}'
 
-        # 创建文件存储目录
+        # 创建文件存储目录 Create directory for each folder
         self.init_file_path()
 
-        # File level data 文件级别数据 # 单独计算每种方法预测得到得缺陷密度
+        # File level data 文件级别数据 # 单独计算每种方法预测得到得缺陷密度 各手法で予測された欠陥密度を個別に計算する
         self.test_pred_labels = []
         self.test_pred_scores = []
         self.test_pred_density = dict()
