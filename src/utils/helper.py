@@ -79,9 +79,9 @@ def read_file_level_dataset(release='', file_path=file_level_path):
     with open(path, 'r', encoding='utf-8', errors='ignore') as file:
         lines = file.readlines()
         # ファイル情報インデックスリスト、各ファイル名が異なる場合にのみこの文はエラーにならない TODO line.index(line)
-        #src_file_indices = [lines.index(line) for line in lines if r'.java,true,"' in line or r'.java,false,"' in line]
-        src_file_indices = [lines.index(line) for line in lines if r'.java,True,' in line or r'.java,False,' in line]
-
+        #src_file_indices = [lines.index(line) for line in lines if r'.java,True,"' in line or r'.java,False,"' in line]
+        src_file_indices = [i for i, line in enumerate(lines) if r'.java,True,' in line or r'.java,False,' in line]
+        
         # ソースファイルのパス、必要な場合はOKを返す
         src_files = [lines[index].split(',')[0] for index in src_file_indices]
         # bug label
@@ -110,7 +110,7 @@ def read_file_level_dataset(release='', file_path=file_level_path):
             code_lines = [line.strip() for line in lines[s_index:e_index]]
             # 先頭行のファイル名とタグ、および先頭行の引用符"を除去する
             #code_lines[0] = code_lines[0].split(',')[-1][1:]   # 先頭行の"は今回無いため必要ない <- ""ありました
-            code_lines[0] = code_lines[0].split(',')[-2][1:]  # 今回は行の最後にbugTypeを追加しているため添え字は-2
+            code_lines[0] = code_lines[0].split(',')[-1][1:]  # 今回は行の最後にbugTypeを追加しているため添え字は-2 <- はじめの行しか見ないから−1でいい
             # 删除列表中最后的"　行の最後の"を削除する
             code_lines = code_lines[:-1]
             texts_lines.append(code_lines)
