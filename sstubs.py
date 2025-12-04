@@ -30,7 +30,7 @@ def run_cross_release_predict(prediction_model, save_time=False):
             print(f'========== {prediction_model.model_name} CR PREDICTION for {releases[i]} ================'[:60])
             # ####### Build time #######
             t_start = time.time()
-            model = prediction_model(releases[i], releases[i], is_realistic=True)
+            model = prediction_model(releases[i], releases[i])
             t_end = time.time()
             build_time_list.append(t_end - t_start)
 
