@@ -25,12 +25,12 @@ def run_cross_release_predict(prediction_model, save_time=False):
     # time
     release_name, build_time_list, pred_time_list = [], [], []
     for project, releases in get_project_releases_dict().items():
-        for i in range(len(releases) - 1):
+        for i in range(len(releases)):
             # 1. Loading data. train data index = i, test data index = i + 1
-            print(f'========== {prediction_model.model_name} CR PREDICTION for {releases[i + 1]} ================'[:60])
+            print(f'========== {prediction_model.model_name} CR PREDICTION for {releases[i]} ================'[:60])
             # ####### Build time #######
             t_start = time.time()
-            model = prediction_model(releases[i], releases[i + 1], is_realistic=True)
+            model = prediction_model(releases[i], releases[i], is_realistic=True)
             t_end = time.time()
             build_time_list.append(t_end - t_start)
 
@@ -43,7 +43,7 @@ def run_cross_release_predict(prediction_model, save_time=False):
             model.analyze_line_level_result()
             t_end = time.time()
             pred_time_list.append(t_end - t_start)
-            release_name.append(releases[i + 1])
+            release_name.append(releases[i])
 
             data = {'release_name': release_name, 'build_time': build_time_list, 'pred_time': pred_time_list}
             data = pd.DataFrame(data, columns=['release_name', 'build_time', 'pred_time'])
