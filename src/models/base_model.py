@@ -45,12 +45,12 @@ class BaseModel(object):
         # File level data reading
         # Only use data available now as training data
         if is_realistic:
-            self.train_text, self.train_text_lines, self.train_label, self.train_filename = read_file_level_dataset(
+            self.train_text, self.train_text_lines, self.train_label, self.train_filename, self.train_bug_type = read_file_level_dataset(
                 train_release, file_path=f'{root_path}Dataset/File-level/')
         else:
-            self.train_text, self.train_text_lines, self.train_label, self.train_filename = read_file_level_dataset(
+            self.train_text, self.train_text_lines, self.train_label, self.train_filename, self.train_bug_type = read_file_level_dataset(
                 train_release)
-        self.test_text, self.test_text_lines, self.test_labels, self.test_filename = read_file_level_dataset(
+        self.test_text, self.test_text_lines, self.test_labels, self.test_filename, self.test_bug_type = read_file_level_dataset(
             test_release)
 
         # 明确存储实验结果的每个文件夹及文件路径 実験結果を保存する各フォルダおよびファイルのパスを明確に指定する

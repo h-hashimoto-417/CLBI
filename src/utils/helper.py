@@ -84,9 +84,20 @@ def read_file_level_dataset(release='', file_path=file_level_path):
 
         # ソースファイルのパス、必要な場合はOKを返す
         src_files = [lines[index].split(',')[0] for index in src_file_indices]
-        # 欠陥マーカー
+        # bug label
         string_labels = [lines[index].split(',')[1] for index in src_file_indices]
-        numeric_labels = [1 if label == 'true' else 0 for label in string_labels]
+        numeric_labels = [1 if label == 'True' else 0 for label in string_labels]
+        
+        # bugType
+        bug_type = []
+        for index in src_file_indices[1:]:
+            line = lines[index - 1]
+            last_word = line.strip().split(',')[-1]
+            bug_type.append(last_word)
+        # 最後のファイルのbugTypeを取得
+        last_line = lines[-1]
+        last_bug_type = last_line.strip().split(',')[-1]
+        bug_type.append(last_bug_type)
 
         # 行レベルのテキストコーパス
         texts_lines = []
@@ -98,16 +109,16 @@ def read_file_level_dataset(release='', file_path=file_level_path):
             # xxx おそらくコメント行を除外する必要がある
             code_lines = [line.strip() for line in lines[s_index:e_index]]
             # 先頭行のファイル名とタグ、および先頭行の引用符"を除去する
-            #code_lines[0] = code_lines[0].split(',')[-1][1:]   # 先頭行の"は今回無いため必要ない
-            code_lines[0] = code_lines[0].split(',')[-1]
+            #code_lines[0] = code_lines[0].split(',')[-1][1:]   # 先頭行の"は今回無いため必要ない <- ""ありました
+            code_lines[0] = code_lines[0].split(',')[-2][1:]  # 今回は行の最後にbugTypeを追加しているため添え字は-2
             # 删除列表中最后的"　行の最後の"を削除する
-            #code_lines = code_lines[:-1]
+            code_lines = code_lines[:-1]
             texts_lines.append(code_lines)
 
         # 多行合并后的文本语料库　複数行を結合した後のテキストコーパス
         texts = [' '.join(line) for line in texts_lines]
 
-        return texts, texts_lines, numeric_labels, src_files
+        return texts, texts_lines, numeric_labels, src_files, bug_type
 
 
 def read_line_level_dataset(release=''):
