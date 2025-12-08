@@ -45,12 +45,12 @@ class BaseModel(object):
         # File level data reading
         # Only use data available now as training data
         if is_realistic:
-            self.train_text, self.train_text_lines, self.train_label, self.train_filename, self.train_bug_type = read_file_level_dataset(
+            self.train_text, self.train_text_lines, self.train_label, self.train_filename = read_file_level_dataset(
                 train_release, file_path=f'{root_path}Dataset/File-level/')
         else:
-            self.train_text, self.train_text_lines, self.train_label, self.train_filename, self.train_bug_type = read_file_level_dataset(
+            self.train_text, self.train_text_lines, self.train_label, self.train_filename = read_file_level_dataset(
                 train_release)
-        self.test_text, self.test_text_lines, self.test_labels, self.test_filename, self.test_bug_type = read_file_level_dataset(
+        self.test_text, self.test_text_lines, self.test_labels, self.test_filename = read_file_level_dataset(
             test_release)
 
         # 明确存储实验结果的每个文件夹及文件路径 実験結果を保存する各フォルダおよびファイルのパスを明確に指定する
@@ -69,7 +69,7 @@ class BaseModel(object):
         self.test_pred_density = dict()
 
         # Line level data 代码行级数据
-        self.oracle_line_dict, self.oracle_line_set = self.get_oracle_lines()
+        self.oracle_line_dict, self.oracle_line_set, self.oracle_bug_type = self.get_oracle_lines()
         self.predicted_buggy_lines = []
         self.predicted_buggy_score = []
         self.predicted_density = []
@@ -93,10 +93,10 @@ class BaseModel(object):
 
     def get_oracle_lines(self):
         # get buggy lines information
-        oracle_line_dict, oracle_line_list = read_line_level_dataset(self.test_release), set()
+        oracle_line_dict, bug_type, oracle_line_list = read_line_level_dataset(self.test_release), set()
         for file_name in oracle_line_dict:
             oracle_line_list.update([f'{file_name}:{line}' for line in oracle_line_dict[file_name]])
-        return oracle_line_dict, oracle_line_list
+        return oracle_line_dict, oracle_line_list, bug_type
 
     # ====================================================================================================
     # Buggy files and lines prediction
