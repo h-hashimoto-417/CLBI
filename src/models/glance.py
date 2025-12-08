@@ -41,6 +41,7 @@ class Glance(BaseModel):
         for i in range(len(defective_file_index)):
             defective_filename = self.test_filename[defective_file_index[i]]
             # 有的测试文件(被预测为有bug,但实际上)没有bug,因此不会出现在 oracle 中,FP,这类文件要剔除,字典值为[]
+            # 一部のテストファイル（バグがあると予測されたが実際にはバグがない）は、Oracleに表示されないためFP（偽陽性）となる。この種のファイルは除外する必要があり、辞書値は[]とする。
             if defective_filename not in self.oracle_line_dict:
                 self.oracle_line_dict[defective_filename] = []
             # 目标文件的代码行列表
@@ -58,7 +59,7 @@ class Glance(BaseModel):
                 if nt == 0:
                     hit_count[line_index] = 0
                 else:
-                    hit_count[line_index] = nt * nfc + 1
+                    hit_count[line_index] = nt * nfc + 1   # nt * (nfc + 1)では？
 
                 if 'for' in tokens_in_line:
                     cc_count[line_index] = True
