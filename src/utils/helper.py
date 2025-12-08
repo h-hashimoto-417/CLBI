@@ -88,16 +88,16 @@ def read_file_level_dataset(release='', file_path=file_level_path):
         string_labels = [lines[index].split(',')[1] for index in src_file_indices]
         numeric_labels = [1 if label == 'True' else 0 for label in string_labels]
         
-        # bugType
-        bug_type = []
-        for index in src_file_indices[1:]:
-            line = lines[index - 1]
-            last_word = line.strip().split(',')[-1]
-            bug_type.append(last_word)
-        # 最後のファイルのbugTypeを取得
-        last_line = lines[-1]
-        last_bug_type = last_line.strip().split(',')[-1]
-        bug_type.append(last_bug_type)
+        # # bugType
+        # bug_type = []
+        # for index in src_file_indices[1:]:
+        #     line = lines[index - 1]
+        #     last_word = line.strip().split(',')[-1]
+        #     bug_type.append(last_word)
+        # # 最後のファイルのbugTypeを取得
+        # last_line = lines[-1]
+        # last_bug_type = last_line.strip().split(',')[-1]
+        # bug_type.append(last_bug_type)
 
         # 行レベルのテキストコーパス
         texts_lines = []
@@ -115,10 +115,10 @@ def read_file_level_dataset(release='', file_path=file_level_path):
             code_lines = code_lines[:-1]
             texts_lines.append(code_lines)
 
-        # 多行合并后的文本语料库　複数行を結合した後のテキストコーパス
+        # 多行合并后的文本语料库　複数行を結合した後のテキスト
         texts = [' '.join(line) for line in texts_lines]
 
-        return texts, texts_lines, numeric_labels, src_files, bug_type
+        return texts, texts_lines, numeric_labels, src_files
 
 
 def read_line_level_dataset(release=''):
@@ -129,6 +129,7 @@ def read_line_level_dataset(release=''):
     if release == '':
         return dict()
     path = f'{line_level_path}{release}{line_level_path_suffix}'
+    bug_type = []
     with open(path, 'r', encoding='utf-8', errors='ignore') as file:
         lines = file.readlines()
         file_buggy_lines_dict = {}
@@ -139,8 +140,11 @@ def read_line_level_dataset(release=''):
                 file_buggy_lines_dict[file_name] = [buggy_line_number]
             else:
                 file_buggy_lines_dict[file_name].append(buggy_line_number)
+            # bugType
+            lastword = temp[2].strip().split(',')[-1]
+            bug_type.append(lastword)
 
-    return file_buggy_lines_dict
+    return file_buggy_lines_dict, bug_type
 
 
 def dump_pk_result(path, data):
