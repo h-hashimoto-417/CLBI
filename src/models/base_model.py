@@ -93,7 +93,8 @@ class BaseModel(object):
 
     def get_oracle_lines(self):
         # get buggy lines information
-        oracle_line_dict, bug_type, oracle_line_list = read_line_level_dataset(self.test_release), set()
+        oracle_line_dict, bug_type = read_line_level_dataset(self.test_release)
+        oracle_line_list = set()
         for file_name in oracle_line_dict:
             oracle_line_list.update([f'{file_name}:{line}' for line in oracle_line_dict[file_name]])
         return oracle_line_dict, oracle_line_list, bug_type
