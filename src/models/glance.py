@@ -7,9 +7,21 @@ from src.models.base_model import BaseModel
 def call_number(statement):
     statement = statement.strip('\"')
     score = 0
+    f_str = 0
+    #pre_char = ''
     for char in statement:
+        if char == '""':
+            if f_str == 0:
+                f_str = 1
+                continue
+            else:
+                f_str = 0
+                continue        
         if char == '(':
-            score += 1
+            if f_str == 0:
+                score += 1
+            if f_str == 1:
+                continue
     return score
 
 
