@@ -90,7 +90,9 @@ class Glance(BaseModel):
 
             # line + 1,因为下标是从0开始计数而不是从1开始
             # 分类为有缺陷的代码行索引
-            sorted_index = np.argsort(hit_count, kind='stable').tolist()[::-1][:int(len(hit_count) * self.line_threshold)]
+            #sorted_index = np.argsort(hit_count, kind='stable').tolist()[::-1][:int(len(hit_count) * self.line_threshold)]
+            sorted_index = np.argsort(-hit_count, kind='stable')[:int(len(hit_count) * self.line_threshold)]
+
             # 去除掉值为0的索引
             sorted_index = [i for i in sorted_index if hit_count[i] > 0]
             # ================= Considering CC statements =====================
