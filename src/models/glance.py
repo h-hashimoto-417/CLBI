@@ -54,9 +54,14 @@ class Glance(BaseModel):
             hit_count = np.zeros(num_of_lines, dtype=int)
             cc_count = np.zeros(num_of_lines, dtype=bool)
             for line_index in range(num_of_lines):
-                tokens_in_line = self.tokenizer(defective_file_line_list[line_index])
+                line_content = defective_file_line_list[line_index]
+                # コメント行はスキップ
+                if line_content.strip().startswith('//') or line_content.strip().startswith('/*') or line_content.strip().startswith('*'):
+                    continue
+                
+                tokens_in_line = self.tokenizer(line_content)
                 nt = len(tokens_in_line)
-                nfc = call_number(defective_file_line_list[line_index])
+                nfc = call_number(line_content)
                 if nt == 0:
                     hit_count[line_index] = 0
                 else:
