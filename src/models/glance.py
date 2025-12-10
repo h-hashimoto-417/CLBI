@@ -59,7 +59,7 @@ class Glance(BaseModel):
                 if nt == 0:
                     hit_count[line_index] = 0
                 else:
-                    hit_count[line_index] = nt * nfc + 1   # nt * (nfc + 1)では？
+                    hit_count[line_index] = nt * (nfc + 1)  # nt * (nfc + 1)では？
 
                 if 'for' in tokens_in_line:
                     cc_count[line_index] = True
