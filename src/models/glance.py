@@ -49,6 +49,7 @@ class Glance(BaseModel):
 
             # ############################ 重点,怎么给每行赋一个缺陷值 ################################
             # 计算 每一行的权重, 初始为 [0 0 0 0 0 0 ... 0 0], 注意行号从0开始计数
+            # 各行の重みを計算する。初期値は [0 0 0 0 0 0 ... 0 0] とする。行番号は0から始まることに注意。
             num_of_lines = len(defective_file_line_list)
             hit_count = np.zeros(num_of_lines, dtype=int)
             cc_count = np.zeros(num_of_lines, dtype=bool)
