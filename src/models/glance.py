@@ -8,20 +8,17 @@ def call_number(statement):
     statement = statement.strip('\"')
     score = 0
     f_str = 0
-    #pre_char = ''
+    pre_char = ''
     for char in statement:
-        if char == '""':
+        if char == '"' and pre_char == '"':
             if f_str == 0:
-                f_str = 1
-                continue
+                f_str = 1                
             else:
-                f_str = 0
-                continue        
+                f_str = 0                        
         if char == '(':
             if f_str == 0:
                 score += 1
-            if f_str == 1:
-                continue
+        pre_char = char
     return score
 
 
