@@ -46,7 +46,7 @@ class BaseModel(object):
         # Only use data available now as training data
         if is_realistic:
             self.train_text, self.train_text_lines, self.train_label, self.train_filename = read_file_level_dataset(
-                train_release, file_path=f'{root_path}Dataset-TMP/File-level/')
+                train_release, file_path=f'{root_path}Dataset/File-level/')
         else:
             self.train_text, self.train_text_lines, self.train_label, self.train_filename = read_file_level_dataset(
                 train_release)
