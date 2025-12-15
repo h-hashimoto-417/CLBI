@@ -15,12 +15,18 @@ simplefilter(action='ignore', category=FutureWarning)
 # グローバル変数の設定
 # r'/root/line-dp/CLDP_data/' r'D:/CLDP_data/'
 root_path = r'/Users/hashimoto/Githubrepo/'
-dataset_string = 'Dataset'
-result_string = 'Result'
+#dataset_string = 'Dataset'
+dataset_string = 'Adjusted_Dataset'
+#result_string = 'Result'
+result_string = 'Result_release'
+# file path
+folder_string = 'adjust_dataset'
 
 dataset_path = f'{root_path}/{dataset_string}/Bug-Info/' # 今回は使わないかも？
-file_level_path = f'{root_path}{dataset_string}/File-level/'
-line_level_path = f'{root_path}{dataset_string}/Line-level/'
+# file_level_path = f'{root_path}{dataset_string}/File-level/'
+# line_level_path = f'{root_path}{dataset_string}/Line-level/'
+file_level_path = f'{root_path}{folder_string}/{dataset_string}/File-level/'
+line_level_path = f'{root_path}{folder_string}/{dataset_string}/Line-level/'
 result_path = f'{root_path}{result_string}'
 file_level_path_suffix = '_files_dataset.csv'
 line_level_path_suffix = '_defective_lines_dataset.csv'
