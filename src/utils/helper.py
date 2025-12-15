@@ -14,9 +14,9 @@ simplefilter(action='ignore', category=FutureWarning)
 
 # 全局变量设置
 # r'/root/line-dp/CLDP_data/' r'D:/CLDP_data/'
-root_path = r'/Users/hashimoto/CLDP_data_D4J/'
+root_path = r'/Users/hashimoto/Githubrepo/'
 dataset_string = 'Dataset'
-result_string = 'Result'
+result_string = 'Result_pre_reserch'
 
 dataset_path = f'{root_path}/{dataset_string}/Bug-Info/'
 file_level_path = f'{root_path}{dataset_string}/File-level/'
