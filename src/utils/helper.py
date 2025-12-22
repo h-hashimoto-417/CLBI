@@ -135,22 +135,23 @@ def read_line_level_dataset(release=''):
     if release == '':
         return dict()
     path = f'{line_level_path}{release}{line_level_path_suffix}'
-    bug_type = []
+    bug_type_dict = []
     with open(path, 'r', encoding='utf-8', errors='ignore') as file:
         lines = file.readlines()
         file_buggy_lines_dict = {}
         for line in lines[1:]:
             temp = line.split(',', 2)
             file_name, buggy_line_number = temp[0], int(temp[1])
+             # bugType
+            bug_type = temp[2].strip().split(',')[-1]
             if file_name not in file_buggy_lines_dict.keys():
                 file_buggy_lines_dict[file_name] = [buggy_line_number]
+                bug_type_dict[file_name] = [bug_type]
             else:
                 file_buggy_lines_dict[file_name].append(buggy_line_number)
-            # bugType
-            lastword = temp[2].strip().split(',')[-1]
-            bug_type.append(lastword)
+                bug_type_dict[file_name].append(bug_type)
 
-    return file_buggy_lines_dict, bug_type
+    return file_buggy_lines_dict, bug_type_dict
 
 
 def dump_pk_result(path, data):
