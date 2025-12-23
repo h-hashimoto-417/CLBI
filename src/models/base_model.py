@@ -270,7 +270,7 @@ class BaseModel(object):
             
         append_title = True if not os.path.exists(f'{self.line_level_result_path}fn_types.csv') else False
         title = 'release,fn_bug_types\n'
-        with open(f'{self.line_level_result_path}_fn_types.csv', 'a') as file:
+        with open(f'{self.line_level_result_path}fn_types.csv', 'a') as file:
             file.write(title) if append_title else None
             for item in fn_bug_types:
                 file.write(f'{self.test_release},{item}\n')
