@@ -267,6 +267,13 @@ class BaseModel(object):
         with open(self.line_level_evaluation_file, 'a') as file:
             file.write(title) if append_title else None
             file.write(f'{self.test_release},{prec},{recall},{far},{ce},{d2h},{mcc},{ifa},{r_20},{ER},{RI},{ratio}\n')
+            
+        append_title = True if not os.path.exists(f'{self.line_level_result_path}fn_types.csv') else False
+        title = 'release,fn_bug_types\n'
+        with open(f'{self.line_level_result_path}_fn_types.csv', 'a') as file:
+            file.write(title) if append_title else None
+            for item in fn_bug_types:
+                file.write(f'{self.test_release},{item}\n')
         return
 
     def rank_strategy(self):
