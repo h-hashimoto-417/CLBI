@@ -135,7 +135,7 @@ def read_line_level_dataset(release=''):
     if release == '':
         return dict()
     path = f'{line_level_path}{release}{line_level_path_suffix}'
-    bug_type_dict = []
+    bug_type_dict = {}
     with open(path, 'r', encoding='utf-8', errors='ignore') as file:
         lines = file.readlines()
         file_buggy_lines_dict = {}
