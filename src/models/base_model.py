@@ -212,7 +212,8 @@ class BaseModel(object):
         self.load_line_level_result()
 
         ##################### Classification performance Performance Performance Indicators ################
-        tp = len(self.oracle_line_set.intersection(self.predicted_buggy_lines))
+        tp_bugs = self.oracle_line_set.intersection(self.predicted_buggy_lines)
+        tp = len(tp_bugs)
         fp = self.num_predict_buggy_lines - tp
         fn = self.num_actual_buggy_lines - tp
         tn = self.num_total_lines - tp - fp - fn
@@ -231,6 +232,15 @@ class BaseModel(object):
                 idx = line_list.index(line_num)
                 fn_bug_types.append(self.oracle_bug_type[filename][idx])
             print(f'FN bug: {filename}:{line_num}, {self.oracle_bug_type[filename][idx]}')
+            
+        tp_bug_types = []
+        for item in tp_bugs:
+            filename, line_str = item.split(":")
+            line_num = int(line_str)
+            line_list = self.oracle_line_dict[filename]
+            if line_num in line_list:
+                idx = line_list.index(line_num)
+                tp_bug_types.append(self.oracle_bug_type[filename][idx])
 
         prec = .0 if tp + fp == .0 else tp / (tp + fp)
         recall = .0 if tp + fn == .0 else tp / (tp + fn)
@@ -273,6 +283,12 @@ class BaseModel(object):
         title = 'release,CHANGE_IDENTIFIER,CHANGE_MODIFIER,DIFFERENT_METHOD_SAME_ARGS,CHANGE_NUMERAL,OVERLOAD_METHOD_MORE_ARGS,CHANGE_OPERATOR,CHANGE_CALLER_IN_FUNCTION_CALL,OVERLOAD_METHOD_DELETED_ARGS,MORE_SPECIFIC_IF,CHANGE_UNARY_OPERATOR,SWAP_BOOLEAN_LITERAL,SWAP_ARGUMENTS,CHANGE_OPERAND,ADD_THROWS_EXCEPTION,DELETE_THROWS_EXCEPTION\n'
         count = Counter(fn_bug_types)
         with open(f'{self.line_level_result_path}fn_types.csv', 'a') as file:
+            file.write(title) if append_title else None
+            file.write(f'{self.test_release},{count["CHANGE_IDENTIFIER"]},{count["CHANGE_MODIFIER"]},{count["DIFFERENT_METHOD_SAME_ARGS"]},{count["CHANGE_NUMERAL"]},{count["OVERLOAD_METHOD_MORE_ARGS"]},{count["CHANGE_OPERATOR"]},{count["CHANGE_CALLER_IN_FUNCTION_CALL"]},{count["OVERLOAD_METHOD_DELETED_ARGS"]},{count["MORE_SPECIFIC_IF"]},{count["CHANGE_UNARY_OPERATOR"]},{count["SWAP_BOOLEAN_LITERAL"]},{count["SWAP_ARGUMENTS"]},{count["CHANGE_OPERAND"]},{count["ADD_THROWS_EXCEPTION"]},{count["DELETE_THROWS_EXCEPTION"]}\n')
+
+        append_title = True if not os.path.exists(f'{self.line_level_result_path}tp_types.csv') else False
+        count = Counter(tp_bug_types)
+        with open(f'{self.line_level_result_path}tp_types.csv', 'a') as file:
             file.write(title) if append_title else None
             file.write(f'{self.test_release},{count["CHANGE_IDENTIFIER"]},{count["CHANGE_MODIFIER"]},{count["DIFFERENT_METHOD_SAME_ARGS"]},{count["CHANGE_NUMERAL"]},{count["OVERLOAD_METHOD_MORE_ARGS"]},{count["CHANGE_OPERATOR"]},{count["CHANGE_CALLER_IN_FUNCTION_CALL"]},{count["OVERLOAD_METHOD_DELETED_ARGS"]},{count["MORE_SPECIFIC_IF"]},{count["CHANGE_UNARY_OPERATOR"]},{count["SWAP_BOOLEAN_LITERAL"]},{count["SWAP_ARGUMENTS"]},{count["CHANGE_OPERAND"]},{count["ADD_THROWS_EXCEPTION"]},{count["DELETE_THROWS_EXCEPTION"]}\n')
         return
