@@ -9,6 +9,7 @@ from src.utils.config import USE_CACHE
 from src.utils.helper import *
 from sklearn import metrics
 from sklearn.linear_model import LogisticRegression
+from collections import Counter
 
 
 class BaseModel(object):
@@ -269,11 +270,11 @@ class BaseModel(object):
             file.write(f'{self.test_release},{prec},{recall},{far},{ce},{d2h},{mcc},{ifa},{r_20},{ER},{RI},{ratio}\n')
             
         append_title = True if not os.path.exists(f'{self.line_level_result_path}fn_types.csv') else False
-        title = 'release,fn_bug_types\n'
+        title = 'release,CHANGE_IDENTIFIER,CHANGE_MODIFIER,DIFFERENT_METHOD_SAME_ARGS,CHANGE_NUMERAL,OVERLOAD_METHOD_MORE_ARGS,CHANGE_OPERATOR,CHANGE_CALLER_IN_FUNCTION_CALL,OVERLOAD_METHOD_DELETED_ARGS,MORE_SPECIFIC_IF,CHANGE_UNARY_OPERATOR,SWAP_BOOLEAN_LITERAL,SWAP_ARGUMENTS,CHANGE_OPERAND,ADD_THROWS_EXCEPTION,DELETE_THROWS_EXCEPTION\n'
+        count = Counter(fn_bug_types)
         with open(f'{self.line_level_result_path}fn_types.csv', 'a') as file:
             file.write(title) if append_title else None
-            for item in fn_bug_types:
-                file.write(f'{self.test_release},{item}\n')
+            file.write(f'{self.test_release},{count["CHANGE_IDENTIFIER"]},{count["CHANGE_MODIFIER"]},{count["DIFFERENT_METHOD_SAME_ARGS"]},{count["CHANGE_NUMERAL"]},{count["OVERLOAD_METHOD_MORE_ARGS"]},{count["CHANGE_OPERATOR"]},{count["CHANGE_CALLER_IN_FUNCTION_CALL"]},{count["OVERLOAD_METHOD_DELETED_ARGS"]},{count["MORE_SPECIFIC_IF"]},{count["CHANGE_UNARY_OPERATOR"]},{count["SWAP_BOOLEAN_LITERAL"]},{count["SWAP_ARGUMENTS"]},{count["CHANGE_OPERAND"]},{count["ADD_THROWS_EXCEPTION"]},{count["DELETE_THROWS_EXCEPTION"]}\n')
         return
 
     def rank_strategy(self):
