@@ -291,6 +291,13 @@ class BaseModel(object):
         with open(f'{self.line_level_result_path}tp_types.csv', 'a') as file:
             file.write(title) if append_title else None
             file.write(f'{self.test_release},{count["CHANGE_IDENTIFIER"]},{count["CHANGE_MODIFIER"]},{count["DIFFERENT_METHOD_SAME_ARGS"]},{count["CHANGE_NUMERAL"]},{count["OVERLOAD_METHOD_MORE_ARGS"]},{count["CHANGE_OPERATOR"]},{count["CHANGE_CALLER_IN_FUNCTION_CALL"]},{count["OVERLOAD_METHOD_DELETED_ARGS"]},{count["MORE_SPECIFIC_IF"]},{count["CHANGE_UNARY_OPERATOR"]},{count["SWAP_BOOLEAN_LITERAL"]},{count["SWAP_ARGUMENTS"]},{count["CHANGE_OPERAND"]},{count["ADD_THROWS_EXCEPTION"]},{count["DELETE_THROWS_EXCEPTION"]}\n')
+        
+        append_title = True if not os.path.exists(f'{self.line_level_result_path}TF_table.csv') else False
+        title = 'release,TP,FP,FN,TN\n'
+        with open(f'{self.line_level_result_path}TF_table.csv', 'a') as file:
+            file.write(title) if append_title else None
+            file.write(f'{self.test_release},{tp},{fp},{fn},{tn}\n')
+
         return
 
     def rank_strategy(self):
