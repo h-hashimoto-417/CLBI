@@ -58,10 +58,10 @@ USE_CACHE = False
 # ]
 
 PROJECT_RELEASE_LIST = [
-    #'square.retrofit-1.0.0',
+    'square.retrofit-1.0.0',
     #'square.okhttp-1.0.0',
     #'libgdx.libgdx-1.0.0',
-    'apache.camel-1.0.0'
+    #'apache.camel-1.0.0'
 ]
 
 # バグのないもの、ファイルのデータがないものを削除した後の最終リスト
