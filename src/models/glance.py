@@ -4,30 +4,30 @@ from src.utils.helper import *
 from src.models.base_model import BaseModel
 
 
-# def call_number(statement):
-#     statement = statement.strip('\"')
-#     score = 0
-#     f_str = 0
-#     pre_char = ''
-#     for char in statement:
-#         if char == '"' and pre_char == '"':
-#             if f_str == 0:
-#                 f_str = 1                
-#             else:
-#                 f_str = 0                        
-#         if char == '(':
-#             if f_str == 0:
-#                 score += 1
-#         pre_char = char
-#     return score
-
 def call_number(statement):
     statement = statement.strip('\"')
     score = 0
+    f_str = 0
+    pre_char = ''
     for char in statement:
+        if char == '"' and pre_char == '"':
+            if f_str == 0:
+                f_str = 1                
+            else:
+                f_str = 0                        
         if char == '(':
-            score += 1
+            if f_str == 0:
+                score += 1
+        pre_char = char
     return score
+
+# def call_number(statement):
+#     statement = statement.strip('\"')
+#     score = 0
+#     for char in statement:
+#         if char == '(':
+#             score += 1
+#     return score
 
 
 ################################## Glance ###################################################################
@@ -73,8 +73,8 @@ class Glance(BaseModel):
             for line_index in range(num_of_lines):
                 line_content = defective_file_line_list[line_index]
                 # コメント行はスキップ
-                # if line_content.strip().startswith('//') or line_content.strip().startswith('/*') or line_content.strip().startswith('*'):
-                #     continue
+                if line_content.strip().startswith('//') or line_content.strip().startswith('/*') or line_content.strip().startswith('*'):
+                    continue
                 
                 tokens_in_line = self.tokenizer(line_content)
                 nt = len(tokens_in_line)
@@ -82,7 +82,7 @@ class Glance(BaseModel):
                 if nt == 0:
                     hit_count[line_index] = 0
                 else:
-                    hit_count[line_index] = nt * nfc + 1  # nt * (nfc + 1)では？
+                    hit_count[line_index] = nt * (nfc + 1)  # nt * (nfc + 1)では？
 
                 if 'for' in tokens_in_line:
                     cc_count[line_index] = True
@@ -108,8 +108,8 @@ class Glance(BaseModel):
             # line + 1,因为下标是从0开始计数而不是从1开始
             # 分类为有缺陷的代码行索引
             #sorted_index = np.argsort(hit_count, kind='stable').tolist()[::-1][:int(len(hit_count) * self.line_threshold)]
-            sorted_index = np.argsort(hit_count).tolist()[::-1][:int(len(hit_count) * self.line_threshold)]
-            # sorted_index = np.argsort(-hit_count, kind='stable')[:int(len(hit_count) * self.line_threshold)]  # 降順ソート
+            # sorted_index = np.argsort(hit_count).tolist()[::-1][:int(len(hit_count) * self.line_threshold)] # 元のコードに戻す
+            sorted_index = np.argsort(-hit_count, kind='stable')[:int(len(hit_count) * self.line_threshold)]  # 降順ソート
 
             # 去除掉值为0的索引
             sorted_index = [i for i in sorted_index if hit_count[i] > 0]
