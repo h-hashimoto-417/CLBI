@@ -57,7 +57,7 @@ USE_CACHE = False
 
 # ]
 
-PROJECT_RELEASE_LIST = [
+PROJECT_RELEASE_LIST_FALSE = [
     'square.retrofit-1.0.0',
     #'square.okhttp-1.0.0',
     #'libgdx.libgdx-1.0.0',
@@ -65,7 +65,7 @@ PROJECT_RELEASE_LIST = [
 ]
 
 # バグのないもの、ファイルのデータがないものを削除した後の最終リスト
-PROJECT_RELEASE_LIST_False = [
+PROJECT_RELEASE_LIST = [
     'spring-projects.spring-boot-1.0.0', 'spring-projects.spring-boot-2.0.0', 'spring-projects.spring-boot-3.0.0',
     'iluwatar.java-design-patterns-1.0.0',
     'square.retrofit-1.0.0',
@@ -136,7 +136,7 @@ PROJECT_RELEASE_LIST_False = [
     'hankcs.HanLP-1.0.0',
     'knightliao.disconf-1.0.0',
     'facebook.presto-1.0.0', 'facebook.presto-2.0.0',
-    'aws.aws-sdk-java-1.0.0', 'aws.aws-sdk-java-2.0.0',
+    'aws.aws-sdk-java-1.0.0', #'aws.aws-sdk-java-2.0.0',
     'cucumber.cucumber-jvm-1.0.0', 'cucumber.cucumber-jvm-2.0.0',
     'Atmosphere.atmosphere-1.0.0', 'Atmosphere.atmosphere-2.0.0', 'Atmosphere.atmosphere-3.0.0', 'Atmosphere.atmosphere-4.0.0', 'Atmosphere.atmosphere-5.0.0', 'Atmosphere.atmosphere-6.0.0',
     'Atmosphere.atmosphere-7.0.0', 'Atmosphere.atmosphere-8.0.0', 'Atmosphere.atmosphere-9.0.0', 'Atmosphere.atmosphere-10.0.0', 'Atmosphere.atmosphere-11.0.0',
@@ -154,8 +154,8 @@ PROJECT_RELEASE_LIST_False = [
     #'checkstyle.checkstyle-1.0.0',
     'roboguice.roboguice-1.0.0', 'roboguice.roboguice-2.0.0',
     'hazelcast.hazelcast-1.0.0', 'hazelcast.hazelcast-2.0.0', 'hazelcast.hazelcast-3.0.0', 'hazelcast.hazelcast-4.0.0',
-    'hazelcast.hazelcast-5.0.0', 'hazelcast.hazelcast-6.0.0', 'hazelcast.hazelcast-7.0.0', 'hazelcast.hazelcast-8.0.0',
-    'antlr.antlr4-1.0.0', 'antlr.antlr4-2.0.0', 'antlr.antlr4-3.0.0',
+    'hazelcast.hazelcast-5.0.0', 'hazelcast.hazelcast-6.0.0', #'hazelcast.hazelcast-7.0.0', 'hazelcast.hazelcast-8.0.0',
+    'antlr.antlr4-1.0.0', 'antlr.antlr4-2.0.0', #'antlr.antlr4-3.0.0',
     #'databricks.learning-spark-1.0.0',
     'Alluxio.alluxio-1.0.0', 'Alluxio.alluxio-2.0.0', 'Alluxio.alluxio-3.0.0', 'Alluxio.alluxio-4.0.0', 'Alluxio.alluxio-5.0.0', 'Alluxio.alluxio-6.0.0',
     #'jfinal.jfinal-1.0.0',
