@@ -143,7 +143,7 @@ def read_line_level_dataset(release=''):
             temp = line.split(',', 2)
             file_name, buggy_line_number = temp[0], int(temp[1])
              # bugType
-            bug_type = temp[2].strip().split(',')[1]
+            bug_type = temp[2].strip().split(',')[0]
             if file_name not in file_buggy_lines_dict.keys():
                 file_buggy_lines_dict[file_name] = [buggy_line_number]
                 bug_type_dict[file_name] = [bug_type]
