@@ -103,7 +103,7 @@ PROJECT_RELEASE_LIST = [
     'mcxiaoke.android-volley-1.0.0',
     'Activiti.Activiti-1.0.0', 'Activiti.Activiti-2.0.0', 'Activiti.Activiti-3.0.0',
     #'spring-projects.spring-petclinic-1.0.0',
-    'openhab.openhab-1.0.0', 'openhab.openhab-2.0.0', 'openhab.openhab-3.0.0',
+    'openhab.openhab-1.0.0', 'openhab.openhab-2.0.0', 'openhab.openhab-3.0.0', 'openhab.openhab-4.0.0',
     'JakeWharton.NineOldAndroids-1.0.0',
     'wildfly.wildfly-1.0.0', 'wildfly.wildfly-2.0.0',
     'Bukkit.Bukkit-1.0.0', 'Bukkit.Bukkit-2.0.0', 'Bukkit.Bukkit-3.0.0', 'Bukkit.Bukkit-4.0.0', 'Bukkit.Bukkit-5.0.0', 'Bukkit.Bukkit-6.0.0',
