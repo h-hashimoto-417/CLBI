@@ -229,18 +229,20 @@ class BaseModel(object):
             line_num = int(line_str)
             line_list = self.oracle_line_dict[filename]
             if line_num in line_list:
-                idx = line_list.index(line_num)
-                fn_bug_types.append(self.oracle_bug_type[filename][idx])
-            print(f'FN bug: {filename}:{line_num}, {self.oracle_bug_type[filename][idx]}')
-            
+                idx_list = [i for i, v in enumerate(line_list) if v == line_num]
+                for idx in idx_list:
+                    fn_bug_types.append(self.oracle_bug_type[filename][idx])
+                    print(f'FN bug: {filename}:{line_num}, {self.oracle_bug_type[filename][idx]}')
+
         tp_bug_types = []
         for item in tp_bugs:
             filename, line_str = item.split(":")
             line_num = int(line_str)
             line_list = self.oracle_line_dict[filename]
             if line_num in line_list:
-                idx = line_list.index(line_num)
-                tp_bug_types.append(self.oracle_bug_type[filename][idx])
+                idx_list = [i for i, v in enumerate(line_list) if v == line_num]
+                for idx in idx_list:
+                    tp_bug_types.append(self.oracle_bug_type[filename][idx])
 
         prec = .0 if tp + fp == .0 else tp / (tp + fp)
         recall = .0 if tp + fn == .0 else tp / (tp + fn)
