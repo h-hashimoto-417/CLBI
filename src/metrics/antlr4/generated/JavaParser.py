@@ -8,10 +8,6 @@ if sys.version_info[1] > 5:
 else:
 	from typing.io import TextIO
 
-if "." in __name__:
-    from .JavaParserBase import JavaParserBase
-else:
-    from JavaParserBase import JavaParserBase
 
 def serializedATN():
     return [
@@ -773,7 +769,7 @@ def serializedATN():
         1803,1814,1822,1826,1828,1835,1839
     ]
 
-class JavaParser ( JavaParserBase ):
+class JavaParser ( Parser ):
 
     grammarFileName = "JavaParser.g4"
 
