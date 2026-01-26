@@ -3,6 +3,8 @@ from src.utils.config import USE_CACHE
 from src.utils.helper import *
 from src.models.base_model import BaseModel
 
+from src.metrics.antlr4.analyze_java import JavaAnalyzer, baseListener
+
 
 # def call_number(statement):
 #     statement = statement.strip('\"')
@@ -29,6 +31,16 @@ def call_number(statement):
             score += 1
     return score
 
+def get_listener(source_file):
+    listener = JavaAnalyzer(source_file, baseListener()).analyze()
+    return listener
+
+def get_literal_count_per_line(listener:baseListener, line_num):
+    literal_count_dict = listener.get_literal_count_per_line()
+    if line_num in literal_count_dict:
+        return literal_count_dict[line_num]
+    else:
+        return 0
 
 ################################## Glance ###################################################################
 # Overwrite method line_level_prediction(), which shared by all Glance based approaches.
