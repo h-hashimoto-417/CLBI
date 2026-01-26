@@ -41,6 +41,13 @@ def get_literal_count_per_line(listener:baseListener, line_num):
         return literal_count_dict[line_num]
     else:
         return 0
+    
+def get_operator_count_per_line(oper_dict, line_num):
+    if line_num in oper_dict:
+        score = sum(oper_dict[line_num].values())   # 演算子ごとに重みを付すべきか？
+        return score
+    else:
+        return 0
 
 ################################## Glance ###################################################################
 # Overwrite method line_level_prediction(), which shared by all Glance based approaches.
