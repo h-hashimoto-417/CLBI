@@ -32,7 +32,7 @@ def call_number(statement):
     return score
 
 def get_listener(source_file):
-    listener = JavaAnalyzer(source_file, baseListener()).analyze()
+    listener = JavaAnalyzer(source_file).analyze( baseListener() )
     return listener
 
 def get_literal_count_per_line(listener:baseListener, line_num):
