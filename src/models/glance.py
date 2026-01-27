@@ -82,6 +82,7 @@ class Glance(BaseModel):
                 self.oracle_line_dict[defective_filename] = []
             # 目标文件的代码行列表
             defective_file_line_list = self.test_text_lines[defective_file_index[i]]
+            defective_file_code = self.test_text[defective_file_index[i]]
 
             # ############################ 重点,怎么给每行赋一个缺陷值 ################################
             # 计算 每一行的权重, 初始为 [0 0 0 0 0 0 ... 0 0], 注意行号从0开始计数
@@ -89,11 +90,19 @@ class Glance(BaseModel):
             num_of_lines = len(defective_file_line_list)
             hit_count = np.zeros(num_of_lines, dtype=int)
             cc_count = np.zeros(num_of_lines, dtype=bool)
+            
+            ast_listener = get_listener(defective_file_code)
+            ope_dict = JavaAnalyzer(defective_file_code).get_operator_count_per_line()
+            
             for line_index in range(num_of_lines):
                 line_content = defective_file_line_list[line_index]
                 # コメント行はスキップ
-                # if line_content.strip().startswith('//') or line_content.strip().startswith('/*') or line_content.strip().startswith('*'):
-                #     continue
+                if line_content.strip().startswith('//') or line_content.strip().startswith('/*') or line_content.strip().startswith('*'):
+                    continue
+                
+                # 各種スコアの取得
+                literal_count = get_literal_count_per_line(ast_listener, line_index + 1)
+                operator_count = get_operator_count_per_line(ope_dict, line_index + 1)
                 
                 tokens_in_line = self.tokenizer(line_content)
                 nt = len(tokens_in_line)
@@ -128,8 +137,8 @@ class Glance(BaseModel):
             # line + 1,因为下标是从0开始计数而不是从1开始
             # 分类为有缺陷的代码行索引
             #sorted_index = np.argsort(hit_count, kind='stable').tolist()[::-1][:int(len(hit_count) * self.line_threshold)]
-            sorted_index = np.argsort(hit_count).tolist()[::-1][:int(len(hit_count) * self.line_threshold)] # 元のコードに戻す
-            # sorted_index = np.argsort(-hit_count, kind='stable')[:int(len(hit_count) * self.line_threshold)]  # 降順ソート
+            # sorted_index = np.argsort(hit_count).tolist()[::-1][:int(len(hit_count) * self.line_threshold)] # 元のコードに戻す
+            sorted_index = np.argsort(-hit_count, kind='stable')[:int(len(hit_count) * self.line_threshold)]  # 降順ソート
 
             # 去除掉值为0的索引
             sorted_index = [i for i in sorted_index if hit_count[i] > 0]
