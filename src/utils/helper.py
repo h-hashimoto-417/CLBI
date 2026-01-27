@@ -85,7 +85,8 @@ def read_file_level_dataset(release='', file_path=file_level_path):
     path = f'{file_path}{release}{file_level_path_suffix}'
     with open(path, 'r', encoding='utf-8', errors='ignore') as file:
         lines = file.readlines()
-        csv_content = csv.reader(file)  # CSVエスケープを考慮するためにcsvモジュールを使用する
+        #csv_content = csv.reader(file)  # CSVエスケープを考慮するためにcsvモジュールを使用する
+        
         # ファイル情報インデックスリスト、各ファイル名が異なる場合にのみこの文はエラーにならない TODO line.index(line)
         #src_file_indices = [lines.index(line) for line in lines if r'.java,True,"' in line or r'.java,False,"' in line]
         src_file_indices = [i for i, line in enumerate(lines) if r'.java,True,' in line or r'.java,False,' in line]
@@ -125,9 +126,16 @@ def read_file_level_dataset(release='', file_path=file_level_path):
 
         # 多行合并后的文本语料库　複数行を結合した後のテキスト
         #texts = ['\n'.join(line) for line in texts_lines]
-        texts = [row[2] for row in csv_content ] # csvモジュールを使用して、正確にテキストを取得する
+        #texts = [row[2] for row in csv_content ] # csvモジュールを使用して、正確にテキストを取得する
+    with open(path, 'r', encoding='utf-8', newline='') as file:
+        csv_content = csv.reader(file)
+        next(csv_content, None)  # ヘッダがある場合
+        texts = []
+        for row in csv_content:
+            if len(row) > 2:
+                texts.append(row[2])  # csvモジュールを使用して、正確にテキストを取得する
 
-        return texts, texts_lines, numeric_labels, src_files
+    return texts, texts_lines, numeric_labels, src_files
 
 
 def read_line_level_dataset(release=''):
