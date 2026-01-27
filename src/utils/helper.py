@@ -122,7 +122,7 @@ def read_file_level_dataset(release='', file_path=file_level_path):
             texts_lines.append(code_lines)
 
         # 多行合并后的文本语料库　複数行を結合した後のテキスト
-        texts = [' '.join(line) for line in texts_lines]
+        texts = ['\n'.join(line) for line in texts_lines]
 
         return texts, texts_lines, numeric_labels, src_files
 
