@@ -35,7 +35,7 @@ class JavaAnalyzer :
     
     def get_operator_count_per_line(self):
         self.stream.fill()
-        operators_count_per_line = defaultdict(defaultdict(int))
+        operators_count_per_line = defaultdict(lambda: defaultdict(int))
         for token in self.stream.tokens:
             if token.channel != Token.DEFAULT_CHANNEL:
                 continue
