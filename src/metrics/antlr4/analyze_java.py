@@ -1,8 +1,8 @@
 from antlr4 import *
-from generated.JavaLexer import JavaLexer
-from generated.JavaParser import JavaParser
-from generated.JavaParserVisitor import JavaParserVisitor
-from generated.JavaParserListener import JavaParserListener
+from src.metrics.antlr4.generated.JavaLexer import JavaLexer
+from src.metrics.antlr4.generated.JavaParser import JavaParser
+from src.metrics.antlr4.generated.JavaParserVisitor import JavaParserVisitor
+from src.metrics.antlr4.generated.JavaParserListener import JavaParserListener
 from collections import defaultdict
 
 
