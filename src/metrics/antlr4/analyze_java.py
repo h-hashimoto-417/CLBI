@@ -60,6 +60,7 @@ class baseListener(JavaParserListener):
     # Override listener methods to capture relevant information
     def enterLiteral(self, ctx:JavaParser.LiteralContext):
         self.literal_count_per_line[ctx.start.line] += 1
+        print(f"Literal found at line {ctx.start.line}: {ctx.getText()}")
         pass
     
     def enterMethodCall(self, ctx: JavaParser.MethodCallContext):
