@@ -424,7 +424,7 @@ class BaseModel(object):
 
         data = {'test_pred_density': self.test_pred_density}
         data = pd.DataFrame(data, columns=['test_pred_density'])
-        data.to_csv(self.buggy_density_file, index=False)
+        data.to_csv(self.buggy_density_file, index=False) # index=Trueにするとファイル名が保存できるのでは？
 
     def load_file_level_result(self):
         # Load file prediction result if no result
