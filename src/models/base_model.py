@@ -331,7 +331,7 @@ class BaseModel(object):
                     temp_scores.append(self.predicted_buggy_score[index])
 
             # Indices of buggy lines in descending order according to scores in each file.
-            sorted_index = np.argsort(temp_scores)[::-1]
+            sorted_index = np.argsort(temp_scores)[::-1] # self.predicted_buggy_linesは同一ファイル内ではスコアごとにソートされているはずなので、ここで再度ソートする必要はないかも
             ranked_predicted_buggy_lines.extend(list(np.array(temp_lines)[sorted_index]))
 
         max_effort = int(self.num_total_lines * self.threshold_effort)
