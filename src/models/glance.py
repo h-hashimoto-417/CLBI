@@ -3,7 +3,7 @@ from src.utils.config import USE_CACHE
 from src.utils.helper import *
 from src.models.base_model import BaseModel
 
-from src.metrics.antlr4.analyze_java import JavaAnalyzer, baseListener, Java8Analyzer, base8Listener
+from src.metrics.antlr4.analyze_java import JavaAnalyzer, baseListener, Java8Analyzer, base8Listener, JavaPAnalyzer, basePListener
 
 
 # def call_number(statement):
@@ -33,7 +33,8 @@ def call_number(statement):
 
 def get_listener(source_file):
     #listener = JavaAnalyzer(source_file).analyze( baseListener() )
-    listener = Java8Analyzer(source_file).analyze( base8Listener() )
+    #listener = Java8Analyzer(source_file).analyze( base8Listener() )
+    listener = JavaPAnalyzer(source_file).analyze( basePListener() )
     return listener
 
 def get_literal_count_per_line(listener, line_num):
