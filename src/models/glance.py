@@ -156,9 +156,9 @@ class Glance(BaseModel):
 
             predicted_score.extend([hit_count[i] for i in resorted_index])
             predicted_lines.extend([f'{defective_filename}:{i + 1}' for i in resorted_index])
-            density = f'{len(np.where(hit_count > 0)) / len(hit_count)}'
+            density = f'{len(np.where(hit_count > 0)[0]) / len(hit_count)}' # add [0]
             predicted_density.extend([density for i in resorted_index])  # NOTE may be removed later
-            print(f'predicted density: {len(np.where(hit_count > 0))} / {len(hit_count)} = {density}')
+            print(f'predicted density: {len(np.where(hit_count > 0)[0])} / {len(hit_count)} = {density}')
             print(f'predicted lines: {len(resorted_index)} lines in file {defective_filename}')
 
         self.predicted_buggy_lines = predicted_lines
