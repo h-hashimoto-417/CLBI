@@ -84,6 +84,9 @@ class Glance(BaseModel):
             # 目标文件的代码行列表
             defective_file_line_list = self.test_text_lines[defective_file_index[i]]
             defective_file_code = self.test_text[defective_file_index[i]]
+            print("lines:", defective_file_code.count("\n"))
+            print(defective_file_code.count('{'), defective_file_code.count('}'))
+            print(defective_file_code.count('('), defective_file_code.count(')'))
 
             # ############################ 重点,怎么给每行赋一个缺陷值 ################################
             # 计算 每一行的权重, 初始为 [0 0 0 0 0 0 ... 0 0], 注意行号从0开始计数
