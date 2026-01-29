@@ -133,6 +133,14 @@ class base8Listener(Java8ParserListener):
         print(f"Literal found at line {ctx.start.line}: {ctx.getText()}")
         pass
     
-    def enterMethodCall(self, ctx: Java8Parser.MethodCallContext):
+    def enterMethodInvocation(self, ctx:Java8Parser.MethodInvocationContext):
+        self.method_call_count_per_line[ctx.start.line] += 1
+        pass
+    
+    def enterMethodInvocation_lf_primary(self, ctx:Java8Parser.MethodInvocation_lf_primaryContext):
+        self.method_call_count_per_line[ctx.start.line] += 1
+        pass
+    
+    def enterMethodInvocation_lfno_primary(self, ctx:Java8Parser.MethodInvocation_lfno_primaryContext):
         self.method_call_count_per_line[ctx.start.line] += 1
         pass
