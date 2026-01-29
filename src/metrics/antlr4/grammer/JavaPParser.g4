@@ -32,7 +32,7 @@
 // $antlr-format alignTrailingComments true, columnLimit 150, minEmptyLines 1, maxEmptyLinesToKeep 1, reflowComments false, useTab false
 // $antlr-format allowShortRulesOnASingleLine false, allowShortBlocksOnASingleLine true, alignSemicolons hanging, alignColons hanging
 
-parser grammar JavaParser;
+parser grammar JavaPParser;
 
 options {
     tokenVocab = JavaLexer;
@@ -357,7 +357,7 @@ annotationFieldValues:
 	;
 
 annotationFieldValue:
-	{ this.IsNotIdentifierAssign() }? annotationValue
+	{ self.IsNotIdentifierAssign() }? annotationValue
 	| identifier '=' annotationValue
 	;
 
@@ -450,7 +450,7 @@ recordHeader
     ;
 
 recordComponentList
-    : recordComponent (',' recordComponent)* { this.DoLastRecordComponent() }?
+    : recordComponent (',' recordComponent)* { self.DoLastRecordComponent() }?
     ;
 
 recordComponent
