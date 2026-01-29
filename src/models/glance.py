@@ -85,9 +85,9 @@ class Glance(BaseModel):
             # 目标文件的代码行列表
             defective_file_line_list = self.test_text_lines[defective_file_index[i]]
             defective_file_code = self.test_text[defective_file_index[i]]
-            print("lines:", defective_file_code.count("\n"))
-            print(defective_file_code.count('{'), defective_file_code.count('}'))
-            print(defective_file_code.count('('), defective_file_code.count(')'))
+            # print("lines:", defective_file_code.count("\n"))
+            # print(defective_file_code.count('{'), defective_file_code.count('}'))
+            # print(defective_file_code.count('('), defective_file_code.count(')'))
 
             # ############################ 重点,怎么给每行赋一个缺陷值 ################################
             # 计算 每一行的权重, 初始为 [0 0 0 0 0 0 ... 0 0], 注意行号从0开始计数
@@ -158,6 +158,8 @@ class Glance(BaseModel):
             predicted_lines.extend([f'{defective_filename}:{i + 1}' for i in resorted_index])
             density = f'{len(np.where(hit_count > 0)) / len(hit_count)}'
             predicted_density.extend([density for i in resorted_index])  # NOTE may be removed later
+            print(f'predicted density: {len(np.where(hit_count > 0))} / {len(hit_count)} = {density}')
+            print(f'predicted lines: {len(resorted_index)} lines in file {defective_filename}')
 
         self.predicted_buggy_lines = predicted_lines
         self.predicted_buggy_score = predicted_score
