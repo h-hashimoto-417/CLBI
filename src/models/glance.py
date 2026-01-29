@@ -6,30 +6,30 @@ from src.models.base_model import BaseModel
 from src.metrics.antlr4.analyze_java import JavaAnalyzer, baseListener, Java8Analyzer, base8Listener, JavaPAnalyzer, basePListener
 
 
-# def call_number(statement):
-#     statement = statement.strip('\"')
-#     score = 0
-#     f_str = 0
-#     pre_char = ''
-#     for char in statement:
-#         if char == '"' and pre_char == '"':
-#             if f_str == 0:
-#                 f_str = 1                
-#             else:
-#                 f_str = 0                        
-#         if char == '(':
-#             if f_str == 0:
-#                 score += 1
-#         pre_char = char
-#     return score
-
 def call_number(statement):
     statement = statement.strip('\"')
     score = 0
+    f_str = 0
+    pre_char = ''
     for char in statement:
+        if char == '"' and pre_char == '"':
+            if f_str == 0:
+                f_str = 1                
+            else:
+                f_str = 0                        
         if char == '(':
-            score += 1
+            if f_str == 0:
+                score += 1
+        pre_char = char
     return score
+
+# def call_number(statement):
+#     statement = statement.strip('\"')
+#     score = 0
+#     for char in statement:
+#         if char == '(':
+#             score += 1
+#     return score
 
 def get_listener(source_file):
     #listener = JavaAnalyzer(source_file).analyze( baseListener() )
@@ -115,8 +115,8 @@ class Glance(BaseModel):
                 if nt == 0:
                     hit_count[line_index] = 0
                 else:
-                    #hit_count[line_index] = nt * (nfc + 1)  # nt * (nfc + 1)では？
-                    hit_count[line_index] = nt * nfc + 1  # 元のコードに戻す
+                    hit_count[line_index] = nt * (nfc + 1)  # nt * (nfc + 1)では？
+                    #hit_count[line_index] = nt * nfc + 1  # 元のコードに戻す
 
                 if 'for' in tokens_in_line:
                     cc_count[line_index] = True
