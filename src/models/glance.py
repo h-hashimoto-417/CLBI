@@ -31,6 +31,13 @@ def call_number(statement):
 #             score += 1
 #     return score
 
+def get_call_number(listener, line_num):
+    method_call_count_dict = listener.get_method_call_count_per_line()
+    if line_num in method_call_count_dict:
+        return method_call_count_dict[line_num]
+    else:
+        return 0
+
 def get_listener(source_file):
     #listener = JavaAnalyzer(source_file).analyze( baseListener() )
     #listener = Java8Analyzer(source_file).analyze( base8Listener() )
@@ -111,7 +118,8 @@ class Glance(BaseModel):
                 
                 tokens_in_line = self.tokenizer(line_content)
                 nt = len(tokens_in_line)
-                nfc = call_number(line_content)
+                #nfc = call_number(line_content)
+                nfc = get_call_number(ast_listener, line_index + 1) # astを走査して関数呼び出し数を取得
                 if nt == 0:
                     hit_count[line_index] = 0
                 else:
