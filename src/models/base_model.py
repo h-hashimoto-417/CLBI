@@ -357,6 +357,26 @@ class BaseModel(object):
                 recall_20 += 1
             count += 1
         return ifa, recall_20 / self.num_actual_buggy_lines
+    
+    def get_rank_performance_per_file(self):
+        recall_20_per_file = dict()
+        for index in range(len(self.test_text_lines)):
+            # The filename of predicted defective files in test set.
+            defective_filename = self.test_filename[index]
+            total_lines = len(self.test_text_lines[index])
+            max_effort = int(total_lines * self.threshold_effort)
+            
+            temp_predicted_lines = []
+            for line in self.predicted_buggy_lines:
+                if line.startswith(defective_filename):
+                    temp_predicted_lines.append(line)                
+            
+            recall_20 = 0
+            for line in temp_predicted_lines[:max_effort]:
+                if line in self.oracle_line_set:
+                    recall_20 += 1
+            recall_20_per_file[defective_filename] = recall_20 / len(self.oracle_line_dict(defective_filename)) if defective_filename in self.oracle_line_dict else 0
+        return recall_20_per_file
 
     # ============================================ File operation ======================================================
     def save_file_level_result(self):
@@ -423,7 +443,8 @@ class BaseModel(object):
         self.test_pred_density = buggy_density
 
         data = {'test_pred_density': self.test_pred_density}
-        data = pd.DataFrame(data, columns=['test_pred_density'])
+        data['recall_20_per_file'] = self.get_rank_performance_per_file()
+        data = pd.DataFrame(data, columns=['test_pred_density', 'recall_20_per_file'])
         #data.to_csv(self.buggy_density_file, index=False) # index=Trueにするとファイル名が保存できるのでは？
         data.to_csv(self.buggy_density_file)
 
