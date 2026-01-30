@@ -155,7 +155,7 @@ class basePListener(JavaPParserListener):
     # Override listener methods to capture relevant information
     def enterLiteral(self, ctx:JavaPParser.LiteralContext):
         self.literal_count_per_line[ctx.start.line] += 1
-        print(f"Literal found at line {ctx.start.line}: {ctx.getText()}")
+        #print(f"Literal found at line {ctx.start.line}: {ctx.getText()}")
         pass
     
     def enterMethodCall(self, ctx: JavaPParser.MethodCallContext):

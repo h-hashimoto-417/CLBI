@@ -7,6 +7,7 @@ import re
 import numpy as np
 import pickle
 import csv
+import sys
 
 # 警告メッセージを無視する
 from src.utils.config import PROJECT_RELEASE_LIST
@@ -127,6 +128,8 @@ def read_file_level_dataset(release='', file_path=file_level_path):
         # 多行合并后的文本语料库　複数行を結合した後のテキスト
         #texts = ['\n'.join(line) for line in texts_lines]
         #texts = [row[2] for row in csv_content ] # csvモジュールを使用して、正確にテキストを取得する
+    
+    csv.field_size_limit(sys.maxsize)   # CSVフィールドのサイズ制限を最大に設定する
     with open(path, 'r', encoding='utf-8', newline='') as file:
         csv_content = csv.reader(file)
         next(csv_content, None)  # ヘッダがある場合
