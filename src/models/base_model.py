@@ -391,7 +391,7 @@ class BaseModel(object):
             if bugType_count[bug_type] > 0:
                 recall_20_per_bugType[bug_type] = recall_20_per_bugType[bug_type] / bugType_count[bug_type]
             else:
-                recall_20_per_bugType[bug_type] = 0
+                recall_20_per_bugType[bug_type] = -1
         return recall_20_per_bugType
     
     def get_rank_performance_per_file(self):
