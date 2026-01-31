@@ -125,7 +125,8 @@ class Glance(BaseModel):
                 else:
                     #hit_count[line_index] = nt * (nfc + 1)  # nt * (nfc + 1)では？
                     #hit_count[line_index] = nt * nfc + 1  # 元のコードに戻す
-                    hit_count[line_index] = (nt + literal_count + operator_count) * (nfc + 1)  # リテラル数、演算子数も加味する
+                    #hit_count[line_index] = (nt + literal_count + operator_count) * (nfc + 1)  # リテラル数、演算子数も加味する
+                    hit_count[line_index] = (1 + literal_count) * (1 + operator_count) * (nfc + 1)  # リテラル数、演算子数も乗算で加味する
 
                 if 'for' in tokens_in_line:
                     cc_count[line_index] = True
