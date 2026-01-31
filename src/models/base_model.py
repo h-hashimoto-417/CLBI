@@ -402,6 +402,14 @@ class BaseModel(object):
             total_lines = len(self.test_text_lines[index])
             max_effort = int(total_lines * self.threshold_effort)
             
+            total_buggy_lines_in_file = 0
+            for line in self.oracle_line_set:
+                if line.startswith(defective_filename):
+                    total_buggy_lines_in_file += 1
+            if total_buggy_lines_in_file == 0:
+                recall_20_per_file[defective_filename] = -1
+                continue
+            
             temp_predicted_lines = []
             for line in self.predicted_buggy_lines:
                 if line.startswith(defective_filename):
@@ -411,7 +419,7 @@ class BaseModel(object):
             for line in temp_predicted_lines[:max_effort]:
                 if line in self.oracle_line_set:
                     recall_20 += 1
-            recall_20_per_file[defective_filename] = recall_20 / len(self.oracle_line_dict[defective_filename]) if defective_filename in self.oracle_line_dict else 0
+            recall_20_per_file[defective_filename] = recall_20 / total_buggy_lines_in_file
         return recall_20_per_file
 
     # ============================================ File operation ======================================================
