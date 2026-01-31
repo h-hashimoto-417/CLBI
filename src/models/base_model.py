@@ -260,7 +260,7 @@ class BaseModel(object):
         RI = .0 if (x * n) == 0 else (y * N - x * n) / (x * n)
 
         ################################ Ranking performance Performance Performance Indicators ################################################
-        ifa, r_20 = self.rank_strategy()  # Strategy 1
+        ifa, r_20, r_20_per_bugType = self.rank_strategy()  # Strategy 1
 
         ################################ Bug hit ratio ################################################
         # buggy_lines_dict = read_dict_from_file(f'{self.commit_buggy_path}/{self.test_release}_commit_buggy_lines.csv')
@@ -298,8 +298,12 @@ class BaseModel(object):
         with open(f'{self.line_level_result_path}TF_table.csv', 'a') as file:
             file.write(title) if append_title else None
             file.write(f'{self.test_release},{tp},{fp},{fn},{tn}\n')
-
-        return
+            
+        append_title = True if not os.path.exists(f'{self.line_level_result_path}bugType_recall_20.csv') else False
+        title = 'release,CHANGE_IDENTIFIER,CHANGE_MODIFIER,DIFFERENT_METHOD_SAME_ARGS,CHANGE_NUMERAL,OVERLOAD_METHOD_MORE_ARGS,CHANGE_OPERATOR,LESS_SPECIFIC_IF,CHANGE_CALLER_IN_FUNCTION_CALL,OVERLOAD_METHOD_DELETED_ARGS,MORE_SPECIFIC_IF,CHANGE_UNARY_OPERATOR,SWAP_BOOLEAN_LITERAL,SWAP_ARGUMENTS,CHANGE_OPERAND,ADD_THROWS_EXCEPTION,DELETE_THROWS_EXCEPTION\n'
+        with open(f'{self.line_level_result_path}bugType_recall_20.csv', 'a') as file:
+            file.write(title) if append_title else None
+            file.write(f'{self.test_release},{r_20_per_bugType.get("CHANGE_IDENTIFIER", 0)},{r_20_per_bugType.get("CHANGE_MODIFIER", 0)},{r_20_per_bugType.get("DIFFERENT_METHOD_SAME_ARGS", 0)},{r_20_per_bugType.get("CHANGE_NUMERAL", 0)},{r_20_per_bugType.get("OVERLOAD_METHOD_MORE_ARGS", 0)},{r_20_per_bugType.get("CHANGE_OPERATOR", 0)},{r_20_per_bugType.get("LESS_SPECIFIC_IF", 0)},{r_20_per_bugType.get("CHANGE_CALLER_IN_FUNCTION_CALL", 0)},{r_20_per_bugType.get("OVERLOAD_METHOD_DELETED_ARGS", 0)},{r_20_per_bugType.get("MORE_SPECIFIC_IF", 0)},{r_20_per_bugType.get("CHANGE_UNARY_OPERATOR", 0)},{r_20_per_bugType.get("SWAP_BOOLEAN_LITERAL", 0)},{r_20_per_bugType.get("SWAP_ARGUMENTS", 0)},{r_20_per_bugType.get("CHANGE_OPERAND", 0)},{r_20_per_bugType.get("ADD_THROWS_EXCEPTION", 0)},{r_20_per_bugType.get("DELETE_THROWS_EXCEPTION", 0)}\n')
 
     def rank_strategy(self):
         """
@@ -338,7 +342,7 @@ class BaseModel(object):
         print(f'Predicted lines: {len(ranked_predicted_buggy_lines)}, Max effort: {max_effort}\n')
 
         # Calculate the performance values of IFA and Recall@20%.
-        return self.get_rank_performance(ranked_predicted_buggy_lines)
+        return self.get_rank_performance(ranked_predicted_buggy_lines), self.get_rank_performance_per_bugType(ranked_predicted_buggy_lines)
 
     def get_rank_performance(self, ranked_predicted_buggy_lines):
         """
@@ -357,6 +361,37 @@ class BaseModel(object):
                 recall_20 += 1
             count += 1
         return ifa, recall_20 / self.num_actual_buggy_lines
+    
+    def get_rank_performance_per_bugType(self, ranked_predicted_buggy_lines):
+        recall_20_per_bugType = dict()
+        bugType_count = dict()
+        for bug_type in set(self.oracle_bug_type):
+            recall_20_per_bugType[bug_type] = 0
+            bugType_count[bug_type] = 0
+        for filename in self.oracle_line_dict:
+            for idx in range(len(self.oracle_line_dict[filename])):
+                bug_type = self.oracle_bug_type[filename][idx]
+                bugType_count[bug_type] += 1
+
+        max_effort = int(self.num_total_lines * self.threshold_effort)
+        
+        for line in ranked_predicted_buggy_lines[:max_effort]:
+            if line in self.oracle_line_set:
+                filename, line_str = line.split(":")
+                line_num = int(line_str)
+                line_list = self.oracle_line_dict[filename]
+                if line_num in line_list:
+                    idx_list = [i for i, v in enumerate(line_list) if v == line_num]
+                    for idx in idx_list:
+                        bug_type = self.oracle_bug_type[filename][idx]
+                        recall_20_per_bugType[bug_type] += 1
+
+        for bug_type in recall_20_per_bugType:
+            if bugType_count[bug_type] > 0:
+                recall_20_per_bugType[bug_type] = recall_20_per_bugType[bug_type] / bugType_count[bug_type]
+            else:
+                recall_20_per_bugType[bug_type] = 0
+        return recall_20_per_bugType
     
     def get_rank_performance_per_file(self):
         recall_20_per_file = dict()
