@@ -342,7 +342,8 @@ class BaseModel(object):
         print(f'Predicted lines: {len(ranked_predicted_buggy_lines)}, Max effort: {max_effort}\n')
 
         # Calculate the performance values of IFA and Recall@20%.
-        return self.get_rank_performance(ranked_predicted_buggy_lines), self.get_rank_performance_per_bugType(ranked_predicted_buggy_lines)
+        ifa, r_20 = self.get_rank_performance(ranked_predicted_buggy_lines)
+        return ifa, r_20, self.get_rank_performance_per_bugType(ranked_predicted_buggy_lines)
 
     def get_rank_performance(self, ranked_predicted_buggy_lines):
         """
