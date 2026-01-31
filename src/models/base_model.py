@@ -410,7 +410,7 @@ class BaseModel(object):
             for line in temp_predicted_lines[:max_effort]:
                 if line in self.oracle_line_set:
                     recall_20 += 1
-            recall_20_per_file[defective_filename] = recall_20 / len(self.oracle_line_dict(defective_filename)) if defective_filename in self.oracle_line_dict else 0
+            recall_20_per_file[defective_filename] = recall_20 / len(self.oracle_line_dict[defective_filename]) if defective_filename in self.oracle_line_dict else 0
         return recall_20_per_file
 
     # ============================================ File operation ======================================================
