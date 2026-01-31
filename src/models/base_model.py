@@ -5,7 +5,7 @@ import math
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 
-from src.utils.config import USE_CACHE
+from src.utils.config import USE_CACHE, BUG_TYPE_LIST
 from src.utils.helper import *
 from sklearn import metrics
 from sklearn.linear_model import LogisticRegression
@@ -365,7 +365,7 @@ class BaseModel(object):
     def get_rank_performance_per_bugType(self, ranked_predicted_buggy_lines):
         recall_20_per_bugType = dict()
         bugType_count = dict()
-        for bug_type in set(self.oracle_bug_type):
+        for bug_type in BUG_TYPE_LIST:
             recall_20_per_bugType[bug_type] = 0
             bugType_count[bug_type] = 0
         for filename in self.oracle_line_dict:
