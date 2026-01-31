@@ -57,7 +57,7 @@ USE_CACHE = False
 
 # ]
 
-PROJECT_RELEASE_LIST = [
+PROJECT_RELEASE_LIST_FALSE = [
     'square.retrofit-1.0.0',
     'square.okhttp-1.0.0',
     'libgdx.libgdx-1.0.0',
@@ -65,7 +65,7 @@ PROJECT_RELEASE_LIST = [
 ]
 
 # バグのないもの、ファイルのデータがないものを削除した後の最終リスト
-PROJECT_RELEASE_LIST_FALSE = [
+PROJECT_RELEASE_LIST = [
     'spring-projects.spring-boot-1.0.0', 'spring-projects.spring-boot-2.0.0', 'spring-projects.spring-boot-3.0.0',
     'iluwatar.java-design-patterns-1.0.0',
     'square.retrofit-1.0.0',
