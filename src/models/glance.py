@@ -763,3 +763,94 @@ class Glance_BEST(Glance):
 
         # Save file level result
         self.save_file_level_result()
+        
+        
+class Glance_BEST_noCC(Glance_BEST):
+    model_name = 'Glance-BEST-noCC'
+
+    def line_level_prediction(self):
+        super(Glance, self).line_level_prediction()
+        if USE_CACHE and os.path.exists(self.line_level_result_file):
+            return
+
+        predicted_lines, predicted_score, predicted_density = [], [], []
+
+        # Indices of defective files in descending order according to the prediction scores
+        defective_file_index = [i for i in np.argsort(self.test_pred_scores)[::-1] if self.test_pred_labels[i] == 1]
+
+        # 对预测为有bug的文件逐个进行代码行级别的排序
+        for i in range(len(defective_file_index)):
+            defective_filename = self.test_filename[defective_file_index[i]]
+            # 一部のテストファイル（バグがあると予測されたが実際にはバグがない）は、Oracleに表示されないためFP（偽陽性）となる。この種のファイルは除外する必要があり、辞書値は[]とする。
+            if defective_filename not in self.oracle_line_dict:
+                self.oracle_line_dict[defective_filename] = []
+            # 目标文件的代码行列表
+            defective_file_line_list = self.test_text_lines[defective_file_index[i]]
+            defective_file_code = self.test_text[defective_file_index[i]]
+            # print("lines:", defective_file_code.count("\n"))
+            # print(defective_file_code.count('{'), defective_file_code.count('}'))
+            # print(defective_file_code.count('('), defective_file_code.count(')'))
+
+            # ############################ 重点,怎么给每行赋一个缺陷值 ################################
+            # 各行の重みを計算する。初期値は [0 0 0 0 0 0 ... 0 0] とする。行番号は0から始まることに注意。
+            num_of_lines = len(defective_file_line_list)
+            hit_count = np.zeros(num_of_lines, dtype=int)
+            cc_count = np.zeros(num_of_lines, dtype=bool)
+            
+            ast_listener = get_listener(defective_file_code)
+            ope_dict = JavaAnalyzer(defective_file_code).get_operator_count_per_line()
+            
+            for line_index in range(num_of_lines):
+                line_content = defective_file_line_list[line_index]
+                # コメント行はスキップ
+                if line_content.strip().startswith('//') or line_content.strip().startswith('/*') or line_content.strip().startswith('*'):
+                    continue
+                
+                # 各種スコアの取得
+                literal_count = get_literal_count_per_line(ast_listener, line_index + 1)
+                operator_count = get_operator_count_per_line(ope_dict, line_index + 1)
+                
+                tokens_in_line = self.tokenizer(line_content)
+                nt = len(tokens_in_line)
+                #nfc = call_number(line_content)
+                nfc = get_call_number(ast_listener, line_index + 1) # astを走査して関数呼び出し数を取得
+                if nt == 0:
+                    hit_count[line_index] = 0
+                else:
+                    #hit_count[line_index] = nt * (nfc + 1)  # nt * (nfc + 1)では？
+                    #hit_count[line_index] = nt * nfc + 1  # 元のコードに戻す
+                    hit_count[line_index] = (nt + literal_count + operator_count) * (nfc + 1)  # リテラル数、演算子数も加味する
+                    #hit_count[line_index] = (1 + literal_count) * (1 + operator_count) * (nfc + 1)  # リテラル数、演算子数も乗算で加味する
+                    #hit_count[line_index] = (literal_count + operator_count + 1) * (nfc + 1)  # リテラル数、演算子数も乗算で加味する
+
+            # line + 1,因为下标是从0开始计数而不是从1开始
+            # 分类为有缺陷的代码行索引
+            #sorted_index = np.argsort(hit_count, kind='stable').tolist()[::-1][:int(len(hit_count) * self.line_threshold)]
+            # sorted_index = np.argsort(hit_count).tolist()[::-1][:int(len(hit_count) * self.line_threshold)] # 元のコードに戻す
+            sorted_index = np.argsort(-hit_count, kind='stable')[:int(len(hit_count) * self.line_threshold)]  # 降順ソート
+
+            # 去除掉值为0的索引
+            sorted_index = [i for i in sorted_index if hit_count[i] > 0]
+            # ================= Considering CC statements =====================
+            # 重新排序, 将包含CC的代码行排在前面
+            # resorted_index = [i for i in sorted_index if cc_count[i]]  # 包含CC的代码行索引
+            # resorted_index.extend([i for i in sorted_index if not cc_count[i]])  # 不包含CC的代码行索引
+            resorted_index = sorted_index
+
+            # ############################ 重点,怎么给每行赋一个缺陷值 END ################################
+
+            predicted_score.extend([hit_count[i] for i in resorted_index])
+            predicted_lines.extend([f'{defective_filename}:{i + 1}' for i in resorted_index])
+            density = f'{len(np.where(hit_count > 0)[0]) / len(hit_count)}' # add [0]
+            predicted_density.extend([density for i in resorted_index])  # NOTE may be removed later
+            print(f'predicted density: {len(np.where(hit_count > 0)[0])} / {len(hit_count)} = {density}')
+            print(f'predicted lines: {len(resorted_index)} lines in file {defective_filename}')
+
+        self.predicted_buggy_lines = predicted_lines
+        self.predicted_buggy_score = predicted_score
+        self.predicted_density = predicted_density
+        self.num_predict_buggy_lines = len(self.predicted_buggy_lines)  # Require in the super class.
+
+        # Save line level result and buggy density
+        self.save_line_level_result()
+        self.save_buggy_density_file()
