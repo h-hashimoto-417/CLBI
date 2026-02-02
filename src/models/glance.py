@@ -742,7 +742,7 @@ class Glance_BEST(Glance):
     """
     model_name = 'Glance-BEST'
 
-    def __init__(self, train_release='', test_release='', line_threshold=0.3, test=False):
+    def __init__(self, train_release='', test_release='', line_threshold=0.5, test=False):
         test_result_path = ''
         if test:
             self.model_name = f'Glance-LR-{str(int(line_threshold * 100))}'
