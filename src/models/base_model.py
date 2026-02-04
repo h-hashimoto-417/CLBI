@@ -33,7 +33,7 @@ class BaseModel(object):
         self.project_name = '-'.join(train_release.split('-')[:-1])
         np.random.seed(0)
         self.random_state = 0
-        self.threshold_effort = 0.2
+        self.threshold_effort = 0.1
 
         # Model training and test release information
         self.train_release = train_release
@@ -301,7 +301,7 @@ class BaseModel(object):
             
         append_title = True if not os.path.exists(f'{self.line_level_result_path}bugType_recall_20.csv') else False
         title = 'release,CHANGE_IDENTIFIER,CHANGE_MODIFIER,DIFFERENT_METHOD_SAME_ARGS,CHANGE_NUMERAL,OVERLOAD_METHOD_MORE_ARGS,CHANGE_OPERATOR,LESS_SPECIFIC_IF,CHANGE_CALLER_IN_FUNCTION_CALL,OVERLOAD_METHOD_DELETED_ARGS,MORE_SPECIFIC_IF,CHANGE_UNARY_OPERATOR,SWAP_BOOLEAN_LITERAL,SWAP_ARGUMENTS,CHANGE_OPERAND,ADD_THROWS_EXCEPTION,DELETE_THROWS_EXCEPTION\n'
-        with open(f'{self.line_level_result_path}bugType_recall_20.csv', 'a') as file:
+        with open(f'{self.line_level_result_path}bugType_recall_{self.threshold_effort*100}.csv', 'a') as file:
             file.write(title) if append_title else None
             file.write(f'{self.test_release},{r_20_per_bugType.get("CHANGE_IDENTIFIER", 0)},{r_20_per_bugType.get("CHANGE_MODIFIER", 0)},{r_20_per_bugType.get("DIFFERENT_METHOD_SAME_ARGS", 0)},{r_20_per_bugType.get("CHANGE_NUMERAL", 0)},{r_20_per_bugType.get("OVERLOAD_METHOD_MORE_ARGS", 0)},{r_20_per_bugType.get("CHANGE_OPERATOR", 0)},{r_20_per_bugType.get("LESS_SPECIFIC_IF", 0)},{r_20_per_bugType.get("CHANGE_CALLER_IN_FUNCTION_CALL", 0)},{r_20_per_bugType.get("OVERLOAD_METHOD_DELETED_ARGS", 0)},{r_20_per_bugType.get("MORE_SPECIFIC_IF", 0)},{r_20_per_bugType.get("CHANGE_UNARY_OPERATOR", 0)},{r_20_per_bugType.get("SWAP_BOOLEAN_LITERAL", 0)},{r_20_per_bugType.get("SWAP_ARGUMENTS", 0)},{r_20_per_bugType.get("CHANGE_OPERAND", 0)},{r_20_per_bugType.get("ADD_THROWS_EXCEPTION", 0)},{r_20_per_bugType.get("DELETE_THROWS_EXCEPTION", 0)}\n')
 
