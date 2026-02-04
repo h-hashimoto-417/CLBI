@@ -299,7 +299,7 @@ class BaseModel(object):
             file.write(title) if append_title else None
             file.write(f'{self.test_release},{tp},{fp},{fn},{tn}\n')
             
-        append_title = True if not os.path.exists(f'{self.line_level_result_path}bugType_recall_20.csv') else False
+        append_title = True if not os.path.exists(f'{self.line_level_result_path}bugType_recall_{self.threshold_effort*100}.csv') else False
         title = 'release,CHANGE_IDENTIFIER,CHANGE_MODIFIER,DIFFERENT_METHOD_SAME_ARGS,CHANGE_NUMERAL,OVERLOAD_METHOD_MORE_ARGS,CHANGE_OPERATOR,LESS_SPECIFIC_IF,CHANGE_CALLER_IN_FUNCTION_CALL,OVERLOAD_METHOD_DELETED_ARGS,MORE_SPECIFIC_IF,CHANGE_UNARY_OPERATOR,SWAP_BOOLEAN_LITERAL,SWAP_ARGUMENTS,CHANGE_OPERAND,ADD_THROWS_EXCEPTION,DELETE_THROWS_EXCEPTION\n'
         with open(f'{self.line_level_result_path}bugType_recall_{self.threshold_effort*100}.csv', 'a') as file:
             file.write(title) if append_title else None
