@@ -823,6 +823,10 @@ class Glance_BEST_noCC(Glance_BEST):
                     # hit_count[line_index] = (1 + literal_count) * (1 + operator_count) * (nfc + 1)  # リテラル数、演算子数も乗算で加味する
                     # hit_count[line_index] = (literal_count + operator_count + 1) * (nfc + 1)  # リテラル数、演算子数も乗算で加味する
                     
+                    hit_count[line_index] = (nt + literal_count + operator_count)  # nfcを除外
+                    # hit_count[line_index] = (1 + literal_count) * (1 + operator_count)  # nfcを除外
+                    # hit_count[line_index] = literal_count + operator_count + 1  # nfcを除外
+                    
                     # hit_count[line_index] = nt * (literal_count + operator_count + 1) * (nfc + 1)  # リテラル数、演算子数も乗算で加味する
                     # hit_count[line_index] = nt * (literal_count + operator_count + 1) # nfcを除外
                     # hit_count[line_index] = nt * (literal_count + 1) * (operator_count + 1) * (nfc + 1)  # リテラル数、演算子数も乗算で加味する
